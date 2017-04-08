@@ -256,8 +256,9 @@ void Draw(void)
 	printf("\t\t\t  Snake\t\t\t"); 
 }
 
-int Die(void)									//判断是否出界 
+int Die(void)									
 {
+	/*判断是否死亡*/
 	Snake* Tmp = Header->Next;
 	if(Header->x < 0 || Header->y < 0 || Header->x > 50 || Header->y > 25){
 		return 1;
