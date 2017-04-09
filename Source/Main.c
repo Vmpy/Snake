@@ -54,7 +54,8 @@ int main(void)
 
 void Play(void)
 {
-	char ch;							
+	char ch;
+	int Tmpx,Tmpy;							
 	Snake* Tmp = Header;
 	Food();			//随机化食物 
 	Draw();			//绘制图形 
@@ -69,6 +70,8 @@ void Play(void)
 				while(Tmp->Next != NULL){
 					Tmp = Tmp->Next;				//定位到末尾 
 				}
+				Tmpx = Tmp->x;
+				Tmpy = Tmp->y;
 				while(Tmp != NULL){
 					if(Tmp->Last){ 
 						Tmp->x = Tmp->Last->x;
@@ -81,8 +84,9 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(80);
-				system("cls");
+				Sleep(120);
+				gotoxy(Tmpx + 5,Tmpy + 5);
+				printf(" ");
 				Draw();
 				if(kbhit()){
 					ch = getch();
@@ -98,6 +102,8 @@ void Play(void)
 				while(Tmp->Next != NULL){
 					Tmp = Tmp->Next;				//定位到末尾 
 				}
+				Tmpx = Tmp->x;
+				Tmpy = Tmp->y;
 				while(Tmp != NULL){
 					if(Tmp->Last){ 
 						Tmp->x = Tmp->Last->x;
@@ -110,8 +116,9 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(80);
-				system("cls");
+				Sleep(120);
+				gotoxy(Tmpx + 5,Tmpy + 5);
+				printf(" ");
 				Draw();
 				if(kbhit()){
 					ch = getch();
@@ -127,6 +134,8 @@ void Play(void)
 				while(Tmp->Next != NULL){
 					Tmp = Tmp->Next;				//定位到末尾 
 				}
+				Tmpx = Tmp->x;
+				Tmpy = Tmp->y;
 				while(Tmp != NULL){
 					if(Tmp->Last){ 
 						Tmp->x = Tmp->Last->x;
@@ -139,8 +148,9 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(80);
-				system("cls");
+				Sleep(120);
+				gotoxy(Tmpx + 5,Tmpy + 5);
+				printf(" ");
 				Draw();
 				if(kbhit()){
 					ch = getch();
@@ -156,6 +166,8 @@ void Play(void)
 				while(Tmp->Next != NULL){
 					Tmp = Tmp->Next;				//定位到末尾 
 				}
+				Tmpx = Tmp->x;
+				Tmpy = Tmp->y;
 				while(Tmp != NULL){
 					if(Tmp->Last){ 
 						Tmp->x = Tmp->Last->x;
@@ -168,8 +180,9 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(80);
-				system("cls");
+				Sleep(120);
+				gotoxy(Tmpx + 5,Tmpy + 5);
+				printf(" ");
 				Draw();
 				if(kbhit()){
 					ch = getch();
@@ -225,7 +238,7 @@ void Grow(char ch)					//长长一截身体
 void Draw(void)
 {
 	int x,y,space;
-	space = 0;
+	space = 0; 
 	Snake* Tmp;
 	Tmp = Header;
 	while(Tmp != NULL){
@@ -233,8 +246,6 @@ void Draw(void)
 		printf("*");
 		Tmp = Tmp->Next;
 	}
-	gotoxy(apple.x + 5,apple.y + 5);
-	printf("%c",1);
 	for(x = 0x0;x < 0x19;x++){
 		gotoxy(x+space + 5,0x0 + 5);
 		printf("■");
@@ -250,17 +261,20 @@ void Draw(void)
 	}
 	gotoxy(x+space+5,0x19+5);
 	printf("■");
+	gotoxy(apple.x + 5,apple.y + 5);
+	printf("%c",2);
 	gotoxy(52 + 5,5 + 5);
 	printf("\t分数:%d",Score);
-	gotoxy(0,0);
-	printf("\t\t\t  Snake\t\t\t"); 
+	gotoxy(0,1);
+	printf("\t\t\t  Snake\t\t\t");
+	gotoxy(0,37);
+	printf("\t\t   W:↑ S:↓ A:← D:→\n"); 
 }
 
-int Die(void)									
+int Die(void)									//判断是否出界 
 {
-	/*判断是否死亡*/
 	Snake* Tmp = Header->Next;
-	if(Header->x < 0 || Header->y < 0 || Header->x > 50 || Header->y > 25){
+	if(Header->x <= 0 || Header->y < 0 || Header->x > 49 || Header->y > 24){
 		return 1;
 	}
 	while(Tmp){
