@@ -24,7 +24,7 @@ void gotoxy(int,int);
 void Initialization(void);
 void Food(void);
 void Play(void);
-void Draw(void);
+void Draw(char);
 int Die(void);
 void Grow(char); 
 
@@ -58,7 +58,8 @@ void Play(void)
 	int Tmpx,Tmpy;							
 	Snake* Tmp = Header;
 	Food();			//随机化食物 
-	Draw();			//绘制图形 
+	Draw(ch);			//绘制图形
+	Hell: 
 	ch = getch();
 	/*具体操作*/
 	while(1){
@@ -87,7 +88,7 @@ void Play(void)
 				Sleep(120);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
-				Draw();
+				Draw(ch);
 				if(kbhit()){
 					ch = getch();
 					if(ch == 'S'){					//贪吃蛇一律不得倒退 
@@ -119,7 +120,7 @@ void Play(void)
 				Sleep(120);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
-				Draw();
+				Draw(ch);
 				if(kbhit()){
 					ch = getch();
 					if(ch == 'W'){
@@ -151,7 +152,7 @@ void Play(void)
 				Sleep(120);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
-				Draw();
+				Draw(ch);
 				if(kbhit()){
 					ch = getch();
 					if(ch == 'D'){
@@ -183,7 +184,7 @@ void Play(void)
 				Sleep(120);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
-				Draw();
+				Draw(ch);
 				if(kbhit()){
 					ch = getch();
 					if(ch == 'A'){
@@ -192,8 +193,11 @@ void Play(void)
 					goto GO;
 				} 
 			}
+		}else{
+			goto Hell;
 		}
 	}
+	
 	Death:							//游戏失败之后 
 	system("cls");
 	gotoxy(0,0);
@@ -235,17 +239,21 @@ void Grow(char ch)					//长长一截身体
 	return;
 }
 
-void Draw(void)
+void Draw(char ch)
 {
 	int x,y,space;
 	space = 0; 
 	Snake* Tmp;
-	Tmp = Header;
+	Tmp = Header->Next;
+	gotoxy(Header->x + 5,Header->y + 5);
+	printf("*");
 	while(Tmp != NULL){
 		gotoxy(Tmp->x + 5,Tmp->y + 5);
 		printf("*");
 		Tmp = Tmp->Next;
+		space++;
 	}
+	space = 0;
 	for(x = 0x0;x < 0x19;x++){
 		gotoxy(x+space + 5,0x0 + 5);
 		printf("■");
@@ -266,15 +274,17 @@ void Draw(void)
 	gotoxy(52 + 5,5 + 5);
 	printf("\t分数:%d",Score);
 	gotoxy(0,1);
-	printf("\t\t\t  Snake\t\t\t");
+	printf("\t\t\t    Snake\t\t\t");
 	gotoxy(0,37);
-	printf("\t\t   W:↑ S:↓ A:← D:→\n"); 
+	printf("\t\t   W:↑ S:↓ A:← D:→\n");
+	printf("\t\t  开始:切换为大写任意键.\n");
+	printf("\t\t  暂停:切换为小写任意键.\n"); 
 }
 
 int Die(void)									//判断是否出界 
 {
 	Snake* Tmp = Header->Next;
-	if(Header->x <= 0 || Header->y < 0 || Header->x > 49 || Header->y > 24){
+	if(Header->x <= 0 || Header->y <= 0 || Header->x > 49 || Header->y > 24){
 		return 1;
 	}
 	while(Tmp){
@@ -303,8 +313,8 @@ void Food(void)
 void Initialization(void)
 {
 	Header = (Snake*)malloc(sizeof(Snake));
-	Header->x = 2;
-	Header->y = 2;
+	Header->x = 25;
+	Header->y = 12;
 	Header->Next = NULL;
 	Header->Last = NULL;
 	return;
