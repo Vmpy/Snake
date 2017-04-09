@@ -201,7 +201,7 @@ void Play(void)
 	Death:							//游戏失败之后 
 	system("cls");
 	gotoxy(0,0);
-	printf("You are die!\n");
+	printf("You Died!\n");
 	printf("\n\t分数:%d\n\n",Score);
 }
 
