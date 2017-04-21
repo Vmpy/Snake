@@ -256,9 +256,9 @@ void Draw(char ch)
 	Snake* Tmp;
 	Tmp = Header->Next;
 	gotoxy(Header->x + 5,Header->y + 5);
-	YELLO;
-	printf("□");
 	REDPLUS;
+	printf("□");
+	YELLO;
 	while(Tmp != NULL){
 		gotoxy(Tmp->x + 5,Tmp->y + 5);
 		printf("■");
