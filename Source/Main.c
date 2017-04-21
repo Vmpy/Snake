@@ -316,7 +316,7 @@ void Food(void)
 	apple.x = rand()%23 + 2;
 	apple.y = rand()%23 + 2;
 	while(Tmp != NULL){
-		if(Tmp->x == apple.x && Tmp->y){				//配合蛇的身体的移动机制(横向一次加2格)
+		if(Tmp->x == apple.x && Tmp->y == apple.y){				//配合蛇的身体的移动机制(横向一次加2格)
 			goto again;
 		}
 		if(apple.x % 2 != 0){
