@@ -3,6 +3,17 @@
 #include <windows.h>
 #include <conio.h>
 
+/*****************************控制台颜色函数宏定义*****************************/
+#define RED SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED)
+#define GREEN SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN)
+#define BLUE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_BLUE)
+#define GREENPLUS SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN|FOREGROUND_INTENSITY)
+#define REDPLUS SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED|FOREGROUND_INTENSITY)
+#define BLUEPLUS SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_BLUE|FOREGROUND_INTENSITY)
+#define YELLO SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN|FOREGROUND_RED|FOREGROUND_INTENSITY)
+#define INDIG SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN|FOREGROUND_BLUE|FOREGROUND_INTENSITY)
+
+/*食物结构体*/
 struct food
 {
 	int x;
@@ -17,6 +28,7 @@ typedef struct body
 	struct body* Last;
 }Snake;
 
+/*蛇头指针*/
 Snake* Header = NULL;
 int Score = 0;
 
@@ -32,7 +44,6 @@ int main(void)
 {
 	char chioce; 
 	srand((unsigned)(time(NULL)));
-	system("color 0a");
 	Omega:
 	system("cls");
 	Score = 0; 
@@ -85,7 +96,7 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(120);
+				Sleep(170);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
 				Draw(ch);
@@ -117,7 +128,7 @@ void Play(void)
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(120);
+				Sleep(170);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
 				Draw(ch);
@@ -144,12 +155,12 @@ void Play(void)
 					}
 					Tmp = Tmp->Last;
 				}
-				(Header->x)--;
+				(Header->x) = (Header->x) - 2;
 				if(Die()){
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(120);
+				Sleep(170);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
 				Draw(ch);
@@ -176,12 +187,12 @@ void Play(void)
 					}
 					Tmp = Tmp->Last;
 				}
-				(Header->x)++;
+				(Header->x)= (Header->x) + 2;
 				if(Die()){
 					goto Death;
 				}
 				Tmp = Header;
-				Sleep(120);
+				Sleep(170);
 				gotoxy(Tmpx + 5,Tmpy + 5);
 				printf(" ");
 				Draw(ch);
@@ -201,7 +212,7 @@ void Play(void)
 	Death:							//游戏失败之后 
 	system("cls");
 	gotoxy(0,0);
-	printf("You Died!\n");
+	printf("You died!\n");
 	printf("\n\t分数:%d\n\n",Score);
 }
 
@@ -225,11 +236,11 @@ void Grow(char ch)					//长长一截身体
 				(End->Next)->y = End->y - 1;
 			}
 			case 'A':{
-				(End->Next)->x = End->x + 1;
+				(End->Next)->x = End->x + 2;
 				(End->Next)->y = End->y;
 			}
 			case 'D':{
-				(End->Next)->x = End->x - 1;
+				(End->Next)->x = End->x - 2;
 				(End->Next)->y = End->y;
 			}
 		}
@@ -241,36 +252,37 @@ void Grow(char ch)					//长长一截身体
 
 void Draw(char ch)
 {
-	int x,y,space;
-	space = 0; 
+	int x,y,space = 0;
 	Snake* Tmp;
 	Tmp = Header->Next;
 	gotoxy(Header->x + 5,Header->y + 5);
-	printf("*");
+	YELLO;
+	printf("□");
+	REDPLUS;
 	while(Tmp != NULL){
 		gotoxy(Tmp->x + 5,Tmp->y + 5);
-		printf("*");
+		printf("■");
 		Tmp = Tmp->Next;
-		space++;
 	}
-	space = 0;
+	GREENPLUS;
 	for(x = 0x0;x < 0x19;x++){
 		gotoxy(x+space + 5,0x0 + 5);
-		printf("■");
+		printf("□");
 		gotoxy(x+space + 5,0x19 + 5);
-		printf("■");
+		printf("□");
 		space++;
 	}
 	for(y = 0x0;y < 0x19;y++){
 		gotoxy(0x0 + 5,y + 5);
-		printf("■");
+		printf("□");
 		gotoxy(0x32 + 5,y + 5);
-		printf("■");
+		printf("□");
 	}
 	gotoxy(x+space+5,0x19+5);
-	printf("■");
+	printf("□");
+	REDPLUS;
 	gotoxy(apple.x + 5,apple.y + 5);
-	printf("%c",2);
+	printf("○");
 	gotoxy(52 + 5,5 + 5);
 	printf("\t分数:%d",Score);
 	gotoxy(0,1);
@@ -284,7 +296,8 @@ void Draw(char ch)
 int Die(void)									//判断是否出界 
 {
 	Snake* Tmp = Header->Next;
-	if(Header->x <= 0 || Header->y <= 0 || Header->x > 49 || Header->y > 24){
+	if(Header->x <= 0 || Header->y <= 0 || Header->x > 50 || Header->y > 24)
+	{
 		return 1;
 	}
 	while(Tmp){
@@ -300,12 +313,15 @@ void Food(void)
 {
 	Snake* Tmp = Header;
 	again:
-	apple.x = rand()%0x17 + 2;
-	apple.y = rand()%0x17 + 2;
+	apple.x = rand()%23 + 2;
+	apple.y = rand()%23 + 2;
 	while(Tmp != NULL){
-		if(Tmp->x == apple.x && Tmp->y){
+		if(Tmp->x == apple.x && Tmp->y){				//配合蛇的身体的移动机制(横向一次加2格)
 			goto again;
 		}
+		if(apple.x % 2 != 0){
+			goto again;
+		} 
 		Tmp = Tmp->Next;
 	}
 }
@@ -313,7 +329,7 @@ void Food(void)
 void Initialization(void)
 {
 	Header = (Snake*)malloc(sizeof(Snake));
-	Header->x = 25;
+	Header->x = 24;
 	Header->y = 12;
 	Header->Next = NULL;
 	Header->Last = NULL;
