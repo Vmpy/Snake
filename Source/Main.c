@@ -33,16 +33,16 @@ Snake* Header = NULL;
 int Score = 0;
 
 void gotoxy(int,int);
-void Initialization(void);
-void Food(void);
-void Play(void);
-void Draw(char);
-int Die(void);
-void Grow(char); 
+void Initialization(void);/*初始化场景和蛇头*/
+void Food(void);/*随机化食物*/
+void Play(void);/*WSAD操作*/
+void Draw(char);/*打印游戏场景*/
+int Die(void);/*检测死亡*/
+void Grow(char); /*长度增加*/
 
 int main(void) 
 {
-	char chioce; 
+	char chioce; /*游戏结束后，是否继续的选择*/
 	srand((unsigned)(time(NULL)));
 	Omega:
 	system("cls");
@@ -316,7 +316,8 @@ void Food(void)
 	apple.x = rand()%23 + 2;
 	apple.y = rand()%23 + 2;
 	while(Tmp != NULL){
-		if(Tmp->x == apple.x && Tmp->y == apple.y){				//配合蛇的身体的移动机制(横向一次加2格)
+		if(Tmp->x == apple.x && Tmp->y == apple.y){
+			Tmp = Header;				
 			goto again;
 		}
 		if(apple.x % 2 != 0){
