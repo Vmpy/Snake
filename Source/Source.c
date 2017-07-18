@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
-#include <conio.h>
+#include <windows.h>				/*必要的windows API提供*/
+#include <conio.h>				/*getch()无缓冲输入，符合游戏操作*/
 
-/*****************************控制台颜色函数宏定义*****************************/
+/*****************************控制台颜色函数宏定义(WinAPI实现)*****************************/
 #define RED SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED)
 #define GREEN SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN)
 #define BLUE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_BLUE)
@@ -19,7 +19,7 @@ struct food
 	int x;
 	int y;
 }apple;
-
+/*蛇身结构体-链表*/
 typedef struct body
 {
 	int x;
@@ -32,7 +32,7 @@ typedef struct body
 Snake* Header = NULL;
 int Score = 0;
 
-void gotoxy(int,int);
+void gotoxy(int,int);     /*通过坐标绘制游戏场景*/
 void Initialization(void);/*初始化场景和蛇头*/
 void Food(void);/*随机化食物*/
 void Play(void);/*WSAD操作*/
@@ -43,12 +43,13 @@ void Grow(char); /*长度增加*/
 int main(void) 
 {
 	char chioce; /*游戏结束后，是否继续的选择*/
-	srand((unsigned)(time(NULL)));
+	srand((unsigned)(time(NULL)));/*随机化rand函数种子*/
 	Omega:
 	system("cls");
 	Score = 0; 
 	Initialization();
 	Play();
+	/*游戏终止*/
 	Alpha:
 	printf("Developer: vmpy(Flee)\n");
 	printf("Game over!Do you want to play again?(Y\\N)\n");
@@ -69,7 +70,7 @@ void Play(void)
 	int Tmpx,Tmpy;							
 	Snake* Tmp = Header;
 	Food();			//随机化食物 
-	Draw(ch);			//绘制图形
+	Draw(ch);	        //绘制图形
 	Hell: 
 	ch = getch();
 	/*具体操作*/
@@ -216,7 +217,7 @@ void Play(void)
 	printf("\n\t分数:%d\n\n",Score);
 }
 
-void Grow(char ch)					//长长一截身体 
+void Grow(char ch)					//变长一截身体 
 {
 	Snake* End = Header;
 	if(Header->x == apple.x && Header->y == apple.y){ 
@@ -293,7 +294,7 @@ void Draw(char ch)
 	printf("\t\t  暂停:切换为小写任意键.\n"); 
 }
 
-int Die(void)									//判断是否出界 
+int Die(void)									//判断是否出界以及死亡
 {
 	Snake* Tmp = Header->Next;
 	if(Header->x <= 0 || Header->y <= 0 || Header->x > 50 || Header->y > 24)
@@ -309,7 +310,7 @@ int Die(void)									//判断是否出界
 	return 0; 
 }
 
-void Food(void)
+void Food(void)						/*随机化食物*/
 {
 	Snake* Tmp = Header;
 	again:
@@ -327,7 +328,7 @@ void Food(void)
 	}
 }
 
-void Initialization(void)
+void Initialization(void)				/*初始化蛇的身体，链表，坐标等等*/
 {
 	Header = (Snake*)malloc(sizeof(Snake));
 	Header->x = 24;
@@ -337,7 +338,7 @@ void Initialization(void)
 	return;
 }
 
-void gotoxy(int x, int y)								 
+void gotoxy(int x, int y)				/*WIN API实现，X：横坐标;Y: 纵坐标*/							 
 {
     COORD pos = {x,y};
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
