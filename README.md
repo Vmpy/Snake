@@ -1,3 +1,3 @@
-# Snake
-My frist Snake!Through linked list.Runtime environment:Windows.
+# Windows控制台程序-贪吃蛇游戏
+控制台实现贪吃蛇
 
