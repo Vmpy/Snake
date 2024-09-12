@@ -33,7 +33,7 @@ typedef struct body
 Snake* Header = NULL;
 int Score = 0;
 
-void gotoxy(int, int);
+void gotoxy(int， int);
 void Initialization(void);/*初始化场景和蛇头*/
 void Food(void);/*随机化食物*/
 void Play(void);/*WSAD操作*/
